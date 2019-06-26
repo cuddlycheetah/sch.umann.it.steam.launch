@@ -1,0 +1,35 @@
+{
+  "Actions": [
+    {
+      "Icon": "pluginIcon",
+      "Name": "Steam Game Launcher",
+      "States": [
+        {
+          "Image": "pluginIcon",
+          "TitleAlignment": "middle",
+          "FontSize": "13"
+        }
+      ],
+      "SupportedInMultiActions": true,
+      "Tooltip": "",
+      "UUID": "sch.umann.it.steam.launch.action"
+    }
+  ],
+  "Author": "CuddlyCheetah",
+  "Category": "Cuddly Cheetah",
+
+  "CodePath": "index.html",
+  "PropertyInspectorPath": "pi.html",
+
+  "Icon": "pluginIcon",
+  "Description": "Start your favourite Game with this Button",
+  "Name": "Steam Game Launcher",
+  "URL": "https://sch.umann.it",
+  "Version": "1.0",
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>sch.umann.it.steam.launch PI</title>
+    <link rel="stylesheet" href="sdpi.css">
+    <script src="common.js"></script>
+    <script src="jquery.min.js"></script>
+    <script src="steamdb.js"></script>
+</head>
+
+<body>
+    <div class="sdpi-wrapper">
+        <div type="textarea" class="sdpi-item" id="required_text">
+            <div class="sdpi-item-label">Game ID or Store Page</div>
+            <span class="sdpi-item-value">
+                <input type="text" value="https://store.steampowered.com/app/550/Left_4_Dead_2/" id="gameIdOrStorePage" required></input>
+            </span>
+            <button class="sdpi-item-value" onClick="save()">Set</button>
+        </div>
+        <img id="test">
+        <div class="sdpi-heading">made by CuddlyCheetah</div>
+    </div>
+
+    <script>
+        const storeRegEx = new RegExp('\/app\/([0-9]*)\/')
+        var pluginAction = null,
+            uuid = ''
+        if ($SD) {
+            $SD.on('connected', function (jsonObj) {
+                uuid = jsonObj['uuid'];
+                if (jsonObj.hasOwnProperty('actionInfo')) {
+                    pluginAction = jsonObj.actionInfo['action']
+                }
+                console.log(jsonObj)
+            })
+        }
+
+        function save() {
+            let game = document.querySelector('#gameIdOrStorePage').value
+            if (isNaN(parseInt(game))) {
+                let match = game.match(storeRegEx)
+                if (!!match) {
+                    game = match[1]
+                }
+            }
+            if (parseInt(game) > 0) { // Id
+                getIconUrl(game, (url) => {
+                    document.querySelector('#test').src = url
+                    sendValueToPlugin(game, 'setGame')
+                })
+            }
+        }
+
+        /** you can also use ES6 syntax like so:
+        *
+        *   if ($SD) $SD.on('connected', (jsonObj) => { uuid=jsonObj.uuid }));
+        *    
+        */
+        var $SD_Settings = {}
+        function sendSettings() {
+            if ($SD && $SD.connection) {
+                $SD.api.sendToPlugin(uuid, pluginAction, $SD_Settings)
+            }
+        }
+        function sendValueToPlugin(value, param) {
+            if ($SD && $SD.connection) {
+                var payload = {};
+                if (param) {
+                    payload[param] = value;
+                }
+                $SD.api.sendToPlugin(uuid, pluginAction, payload);
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>
